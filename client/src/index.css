@@ -1,0 +1,38 @@
+/* client/src/index.css */
+@import "tailwindcss";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+ 
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 60px; /* matches sticky navbar height */
+}
+
+ 
+body {
+  overflow-y: scroll;
+  
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+ 
+body,
+#root {
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+ 
+img {
+  display: block;
+  max-width: 100%;
+}
