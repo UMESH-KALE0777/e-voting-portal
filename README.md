@@ -2,7 +2,7 @@
 
 A scalable, full-stack election management system built with the MERN stack. Designed for institutional use, it features secure JWT-based student authentication, dynamic role-based ballot rendering, and a live real-time results dashboard. This system was successfully deployed to facilitate official academic department elections, ensuring zero data discrepancies and eliminating ballot tampering.
 
-## Features
+## Features..
 
 - **Secure Authentication:** JWT-based login validating University Serial Number (USN), Year, and Section.
 - **Dynamic Ballots:** Voters only see candidates eligible for their specific cohort and global roles (e.g., General Secretary).
