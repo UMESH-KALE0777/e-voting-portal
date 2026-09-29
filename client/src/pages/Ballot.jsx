@@ -37,6 +37,32 @@ const Ballot = () => {
         fetchBallot();
     }, []);
 
+    useEffect(() => {
+        if (submitStatus === 'success') {
+            const timer = setTimeout(() => {
+                logout();
+                navigate('/login');
+            }, 3000); // 3000 milliseconds = 3 seconds
+            
+            return () => clearTimeout(timer);
+        }
+    }, [submitStatus, logout, navigate]);
+
+    if (user?.hasVoted) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+                <h2 className="text-2xl font-bold text-red-600 mb-2">Access Denied</h2>
+                <p className="text-gray-600 mb-6">Your vote has already been securely recorded. You cannot vote twice.</p>
+                <button 
+                    onClick={() => navigate('/results')} 
+                    className="bg-blue-600 text-white py-2 px-6 rounded-lg font-medium"
+                >
+                    View Live Results
+                </button>
+            </div>
+        );
+    }
+
     const handleSelect = (role, candidateId) => {
         setSelections(prev => ({ ...prev, [role]: candidateId }));
     };
@@ -74,16 +100,20 @@ const Ballot = () => {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
                 <div className="bg-white p-8 rounded-xl shadow-md max-w-md w-full text-center border border-green-100">
-                    <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                        <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
+                        <svg className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Vote Submitted!</h2>
-                    <p className="text-gray-600 mb-6">Your vote has been securely recorded. Thank you for participating in the AIML Department Elections.</p>
-                    <button onClick={handleLogout} className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 font-medium transition-colors">
-                        Log Out securely
-                    </button>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Vote Securely Recorded!</h2>
+                    <p className="text-gray-600 mb-6">Thank you for voting. Please step away for the next voter.</p>
+                    <div className="flex items-center justify-center text-sm text-gray-400">
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Resetting system securely...
+                    </div>
                 </div>
             </div>
         );

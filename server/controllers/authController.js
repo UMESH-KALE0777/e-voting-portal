@@ -46,6 +46,7 @@ const loginStudent = async (req, res) => {
         name: student.name,
         year: student.year,
         section: student.section,
+        hasVoted: student.hasVoted,
       },
     });
   } catch (error) {

@@ -22,42 +22,37 @@ const getBallot = async (req, res) => {
     }
 };
 
-// @desc    Submit student vote
+// @desc    Submit vote
 // @route   POST /api/voting/submit
 // @access  Private
 const submitVote = async (req, res) => {
-    try {
-        const { usn } = req.user;
-        const { selectedCandidateIds } = req.body; // Array of candidate IDs
+  try {
+    const { selectedCandidateIds } = req.body;
+    
+    // 1. Fetch the fresh student record from the database
+    const student = await Student.findById(req.user.id);
 
-        if (!selectedCandidateIds || !Array.isArray(selectedCandidateIds) || selectedCandidateIds.length === 0) {
-            return res.status(400).json({ success: false, message: 'No candidates selected' });
-        }
-
-        // Check if student exists and has already voted
-        const student = await Student.findOne({ usn });
-        if (!student) {
-            return res.status(404).json({ success: false, message: 'Student record not found' });
-        }
-
-        if (student.hasVoted) {
-            return res.status(403).json({ success: false, message: 'You have already cast your vote' });
-        }
-
-        // Increment vote count for selected candidates
-        await Candidate.updateMany(
-            { _id: { $in: selectedCandidateIds } },
-            { $inc: { voteCount: 1 } }
-        );
-
-        // Mark student as voted
-        student.hasVoted = true;
-        await student.save();
-
-        res.status(200).json({ success: true, message: 'Vote submitted successfully' });
-    } catch (error) {
-        res.status(500).json({ success: false, message: 'Server error submitting vote', error: error.message });
+    // 2. SECURITY CHECK: Has the student already voted?
+    if (student.hasVoted) {
+      return res.status(403).json({ 
+        success: false, 
+        message: 'Vote rejected. You have already cast your ballot.' 
+      });
     }
+
+    // 3. Process the votes
+    for (const candidateId of selectedCandidateIds) {
+      await Candidate.findByIdAndUpdate(candidateId, { $inc: { voteCount: 1 } });
+    }
+
+    // 4. Lock the student's account from future voting
+    student.hasVoted = true;
+    await student.save();
+
+    res.status(200).json({ success: true, message: 'Vote successfully submitted' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
+  }
 };
 
 // @desc    Get election results

@@ -14,8 +14,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Basic validation
+    
     if (!year || !section) {
       setError('Please select your year and section.');
       return;
@@ -24,11 +23,19 @@ const Login = () => {
     setError('');
     setIsSubmitting(true);
 
-    // Pass all three values to the login function
     const result = await login(usn, year, section);
-
+    
     if (result.success) {
-      navigate('/ballot'); // Redirect to voting ballot on success
+      // Check the returned student object
+      const loggedInStudent = JSON.parse(localStorage.getItem('user'));
+      
+      if (loggedInStudent?.hasVoted) {
+        // If they already voted, send them directly to the results!
+        navigate('/results'); 
+      } else {
+        // Otherwise, let them vote
+        navigate('/ballot'); 
+      }
     } else {
       setError(result.message);
       setIsSubmitting(false);
