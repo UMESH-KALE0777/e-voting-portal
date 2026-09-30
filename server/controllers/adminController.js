@@ -19,30 +19,31 @@ const loginAdmin = async (req, res) => {
     }
 };
 
-// @desc    Add a Candidate (with Image)
-// @route   POST /api/admin/candidate
 const addCandidate = async (req, res) => {
-    try {
-        const { name, role, year, section } = req.body;
-        let imageBase64 = null;
+  try {
+    const { name, role, year, section } = req.body;
 
-        // Convert the uploaded file buffer into a Base64 string for MongoDB storage
-        if (req.file) {
-            imageBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-        }
-
-        const candidate = await Candidate.create({
-            name,
-            role,
-            year,
-            section,
-            image: imageBase64 // Store the encoded image string
-        });
-
-        res.status(201).json({ success: true, data: candidate });
-    } catch (error) {
-        res.status(500).json({ success: false, message: 'Failed to add candidate', error: error.message });
+    // Safely parse image buffer to Base64 if uploaded
+    let imageData = '';
+    if (req.file) {
+      const base64Image = req.file.buffer.toString('base64');
+      imageData = `data:${req.file.mimetype};base64,${base64Image}`;
     }
+
+    const candidate = new Candidate({
+      name,
+      role,
+      year: Number(year), // Explicitly convert string from FormData to Number
+      section,
+      image: imageData
+    });
+
+    await candidate.save();
+    res.status(201).json({ success: true, data: candidate });
+  } catch (error) {
+    console.error('Error in addCandidate:', error);
+    res.status(500).json({ success: false, message: 'Failed to add candidate', error: error.message });
+  }
 };
 
 // @desc    Clear Election Data (Factory Reset)
@@ -87,4 +88,21 @@ const getVotersForCandidate = async (req, res) => {
     }
 };
 
-module.exports = { loginAdmin, addCandidate, resetElection, getVotersForCandidate };
+// @desc    Get election results
+// @route   GET /api/admin/results
+const getResults = async (req, res) => {
+  try {
+    const candidates = await Candidate.find({}).sort({ voteCount: -1 });
+    res.status(200).json({ success: true, data: candidates });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to fetch results', error: error.message });
+  }
+};
+
+module.exports = {
+  loginAdmin,
+  addCandidate,
+  resetElection,
+  getVotersForCandidate,
+  getResults
+};

@@ -1,23 +1,22 @@
 const jwt = require('jsonwebtoken');
 
 const protectAdmin = (req, res, next) => {
-    let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        token = req.headers.authorization.split(' ')[1];
-        try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const token = req.headers.authorization?.split(' ')[1];
 
-            // Ensure the token has the admin role
-            if (decoded.role !== 'admin') {
-                throw new Error('Not authorized as admin');
-            }
-            next();
-        } catch (error) {
-            res.status(401).json({ success: false, message: 'Not authorized, admin token failed' });
-        }
-    } else {
-        res.status(401).json({ success: false, message: 'Not authorized, no token' });
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'Not authorized, no token' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Forbidden: Admin access required' });
     }
+    req.admin = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({ success: false, message: 'Token failed validation' });
+  }
 };
 
-module.exports = { protectAdmin };
+module.exports = protectAdmin; // Export directly as a function

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { addCandidate, getResults, resetElection } from '../services/api';
+import API from '../services/api';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const AdminDashboard = () => {
 
   const fetchLiveResults = async () => {
     try {
-      const response = await getResults();
+      const response = await API.get('/admin/results');
       setCandidates(response.data.data);
     } catch (err) {
       if (err.response?.status === 401) navigate('/admin/login');
@@ -55,7 +55,7 @@ const AdminDashboard = () => {
     if (image) formData.append('image', image);
 
     try {
-      await addCandidate(formData);
+      await API.post('/admin/candidate', formData);
       setMessage({ type: 'success', text: 'Candidate successfully added!' });
       setName('');
       setImage(null);
@@ -73,7 +73,7 @@ const AdminDashboard = () => {
     if (!isConfirmed) return;
 
     try {
-      await resetElection();
+      await API.delete('/admin/reset');
       setMessage({ type: 'success', text: 'Election data completely wiped.' });
       setCandidates([]);
     } catch (err) {

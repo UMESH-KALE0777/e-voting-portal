@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { getBallot, submitVote } from '../services/api';
+import API from '../services/api'; // <-- 1. Updated Import
 
 const Ballot = () => {
     const { user, logout } = useContext(AuthContext);
@@ -16,7 +16,8 @@ const Ballot = () => {
     useEffect(() => {
         const fetchBallot = async () => {
             try {
-                const response = await getBallot();
+                // 2. Updated API Call
+                const response = await API.get('/voting/ballot');
                 const candidates = response.data.data;
 
                 // Group candidates by their role (CR, LR, GS, etc.)
@@ -43,7 +44,7 @@ const Ballot = () => {
                 logout();
                 navigate('/login');
             }, 3000); // 3000 milliseconds = 3 seconds
-            
+
             return () => clearTimeout(timer);
         }
     }, [submitStatus, logout, navigate]);
@@ -53,8 +54,8 @@ const Ballot = () => {
             <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
                 <h2 className="text-2xl font-bold text-red-600 mb-2">Access Denied</h2>
                 <p className="text-gray-600 mb-6">Your vote has already been securely recorded. You cannot vote twice.</p>
-                <button 
-                    onClick={() => navigate('/results')} 
+                <button
+                    onClick={() => navigate('/results')}
                     className="bg-blue-600 text-white py-2 px-6 rounded-lg font-medium"
                 >
                     View Live Results
@@ -79,7 +80,8 @@ const Ballot = () => {
         setError('');
 
         try {
-            await submitVote(selectedIds);
+            // 3. Updated API Call (matching the expected backend format)
+            await API.post('/voting/submit', { selectedCandidateIds: selectedIds });
             setSubmitStatus('success');
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to submit vote');
@@ -127,7 +129,7 @@ const Ballot = () => {
                     <div>
                         <h1 className="text-xl font-bold text-gray-900">Official Ballot</h1>
                         <p className="text-sm text-gray-500">
-                            Voter: {user?.usn} • Year {user?.year} • Sec {user?.section}
+                            Voter: {user?.usn} | Year {user?.year} | Sec {user?.section}
                         </p>
                     </div>
                     <button onClick={handleLogout} className="text-sm text-gray-600 hover:text-gray-900 font-medium">
@@ -178,7 +180,9 @@ const Ballot = () => {
                                             />
                                             <div className="flex-1">
                                                 <h3 className="font-semibold text-gray-900">{candidate.name}</h3>
-                                                <p className="text-xs text-gray-500">Year {candidate.year} • Sec {candidate.section}</p>
+                                                <p className="text-xs text-gray-500">
+                                                    Year {candidate.year} | Sec {candidate.section}
+                                                </p>
                                             </div>
 
                                             {/* Custom Radio Button Circle */}

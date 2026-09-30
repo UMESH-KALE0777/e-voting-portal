@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import { loginStudent } from '../services/api';
+import API from '../services/api';
 
 export const AuthContext = createContext();
 
@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (usn, year, section) => {
     try {
-      const response = await loginStudent(usn, year, section);
+      const response = await API.post('/auth/login', { usn, year, section });
       const { token, student } = response.data;
 
       // Save to localStorage for persistence
