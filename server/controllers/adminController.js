@@ -5,18 +5,32 @@ const Student = require('../models/Student');
 // @desc    Admin Login
 // @route   POST /api/admin/login
 const loginAdmin = async (req, res) => {
+  try {
     const { username, password } = req.body;
 
-    // Temporarily hardcode for local Windows testing
-    const expectedUser = "admin";
-    const expectedPass = "supersecret123";
+    // Strip hidden spaces or Windows line-endings (\r) from both sides
+    const safeInputUser = username ? username.trim() : '';
+    const safeInputPass = password ? password.trim() : '';
+    const safeEnvUser = (process.env.ADMIN_USERNAME || '').trim();
+    const safeEnvPass = (process.env.ADMIN_PASSWORD || '').trim();
 
-    if (username === expectedUser && password === expectedPass) {
-        const token = jwt.sign({ role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '4h' });
-        res.status(200).json({ success: true, token });
+    // Compare the cleaned values
+    if (safeInputUser === safeEnvUser && safeInputPass === safeEnvPass) {
+      
+      const token = jwt.sign(
+        { id: 'admin', role: 'admin' }, 
+        process.env.JWT_SECRET, 
+        { expiresIn: '1d' }
+      );
+      
+      return res.status(200).json({ success: true, token });
     } else {
-        res.status(401).json({ success: false, message: 'Invalid Admin Credentials' });
+      return res.status(401).json({ success: false, message: 'Invalid Admin Credentials' });
     }
+  } catch (error) {
+    console.error('Admin login error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
 };
 
 const addCandidate = async (req, res) => {
