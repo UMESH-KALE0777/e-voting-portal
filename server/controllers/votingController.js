@@ -6,19 +6,30 @@ const Candidate = require('../models/Candidate');
 // @access  Private
 const getBallot = async (req, res) => {
   try {
-    const year = Number(req.user.year);
-    const section = req.user.section;
+    // 1. Standardize the voter's data to prevent mismatch errors (e.g., 'A ' vs 'A')
+    const voterYear = Number(req.user.year);
+    const voterSection = (req.user.section || '').trim().toUpperCase();
 
-    // Match voter's specific cohort OR any General Secretary candidates
+    // 2. Fetch candidates using the $or operator
     const candidates = await Candidate.find({
       $or: [
-        { year: year, section: section },
-        { role: { $in: ['GS', 'General Secretary'] } }
+        // DOOR 1: Universal Roles
+        // This makes the GS visible to all years (2nd, 3rd, 4th) and all sections (A, B)
+        // The 'i' makes it case-insensitive so it catches 'GS', 'gs', 'General Secretary'
+        { role: { $regex: /^(GS|General Secretary)$/i } },
+        
+        // DOOR 2: Cohort-Specific Roles (CR, LR, Cultural, Sports)
+        // If they are not GS, they MUST perfectly match the voter's year and section
+        { 
+          year: voterYear, 
+          section: { $regex: new RegExp(`^${voterSection}$`, 'i') }
+        }
       ]
     });
 
     res.status(200).json({ success: true, count: candidates.length, data: candidates });
   } catch (error) {
+    console.error('Error fetching ballot:', error);
     res.status(500).json({ success: false, message: 'Server error fetching ballot', error: error.message });
   }
 };
