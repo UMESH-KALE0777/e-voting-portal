@@ -1,0 +1,238 @@
+/* client/src/pages/Ballot.css */
+
+/* Candidate Interactive Card Container */
+.candidate-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+  padding: 1rem 0;
+}
+
+@media (min-width: 640px) {
+  .candidate-cards-grid {
+    justify-items: start;
+  }
+}
+
+.candidate-card {
+  width: 280px;
+  height: 290px;
+  background: #ffffff;
+  border-radius: 32px;
+  padding: 3px;
+  position: relative;
+  box-shadow: #604b4a30 0px 70px 30px -50px, 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+
+/* Card hover & selected states */
+.candidate-card:hover {
+  border-top-left-radius: 55px;
+  box-shadow: #604b4a45 0px 75px 35px -45px, 0 15px 35px -5px rgba(245, 93, 86, 0.2);
+  transform: translateY(-2px);
+}
+
+.candidate-card.is-selected {
+  border-top-left-radius: 55px;
+  border-color: #f55d56;
+  box-shadow: rgba(245, 93, 86, 0.3) 0px 75px 35px -45px, 0 0 0 3px rgba(245, 93, 86, 0.2);
+}
+
+/* Selected Badge at top right */
+.candidate-card .selection-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  background: #f55d56;
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(245, 93, 86, 0.45);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  animation: badgePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes badgePop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Profile Picture (Image / Avatar) */
+.candidate-card .profile-pic {
+  position: absolute;
+  width: calc(100% - 6px);
+  height: calc(100% - 6px);
+  top: 3px;
+  left: 3px;
+  border-radius: 29px;
+  z-index: 1;
+  border: 0px solid #fbb9b6;
+  overflow: hidden;
+  background: #f1f5f9;
+  transition: all 0.5s ease-in-out 0.2s, z-index 0.5s ease-in-out 0.2s;
+}
+
+.candidate-card .profile-pic img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-position: center top;
+  transition: all 0.5s ease-in-out 0s;
+}
+
+/* Default avatar fallback if no image */
+.candidate-card .profile-pic .avatar-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fce7e7, #fed7d7);
+  color: #f55d56;
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+/* Hover & Selected Avatar Transition */
+.candidate-card:hover .profile-pic,
+.candidate-card.is-selected .profile-pic {
+  width: 95px;
+  height: 95px;
+  aspect-ratio: 1;
+  top: 10px;
+  left: 10px;
+  border-radius: 50%;
+  z-index: 3;
+  border: 6px solid #fbb9b6;
+  box-shadow: rgba(96, 75, 74, 0.188) 0px 5px 5px 0px;
+  transition: all 0.5s ease-in-out, z-index 0.5s ease-in-out 0.1s;
+}
+
+.candidate-card:hover .profile-pic:hover {
+  transform: scale(1.15);
+  border-radius: 50%;
+}
+
+.candidate-card:hover .profile-pic img,
+.candidate-card.is-selected .profile-pic img {
+  transform: scale(1.15);
+  object-position: center 20%;
+  transition: all 0.5s ease-in-out 0.3s;
+}
+
+/* Bottom Sheet */
+.candidate-card .bottom {
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
+  background: #fbb9b6;
+  top: 78%;
+  border-radius: 29px;
+  z-index: 2;
+  box-shadow: rgba(96, 75, 74, 0.188) 0px 5px 5px 0px inset;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+}
+
+.candidate-card:hover .bottom,
+.candidate-card.is-selected .bottom {
+  top: 22%;
+  border-radius: 80px 29px 29px 29px;
+  transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
+}
+
+/* Candidate Content */
+.candidate-card .bottom .content {
+  position: absolute;
+  top: 18px;
+  left: 1.4rem;
+  right: 1.4rem;
+  transition: all 0.3s ease;
+}
+
+.candidate-card:hover .bottom .content,
+.candidate-card.is-selected .bottom .content {
+  top: 52px;
+}
+
+.candidate-card .bottom .content .name {
+  display: block;
+  font-size: 1.2rem;
+  color: #ffffff;
+  font-weight: 800;
+  text-transform: capitalize;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.candidate-card .bottom .content .about-me {
+  display: block;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.95);
+  margin-top: 0.4rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Bottom Action Row */
+.candidate-card .bottom .bottom-bottom {
+  position: absolute;
+  bottom: 1.15rem;
+  left: 1.4rem;
+  right: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Cast My Vote Button inside card */
+.candidate-card .cast-vote-btn {
+  width: 100%;
+  background: #ffffff;
+  color: #f55d56;
+  border: none;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 0.6rem 1rem;
+  letter-spacing: 0.02em;
+  box-shadow: rgba(165, 132, 130, 0.25) 0px 5px 8px 0px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.candidate-card .cast-vote-btn:hover {
+  background: #f55d56;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: rgba(245, 93, 86, 0.35) 0px 8px 12px 0px;
+}
+
+/* When this card is selected */
+.candidate-card.is-selected .cast-vote-btn {
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: rgba(15, 23, 42, 0.3) 0px 6px 10px 0px;
+}
+
+.candidate-card.is-selected .cast-vote-btn:hover {
+  background: #1e293b;
+}

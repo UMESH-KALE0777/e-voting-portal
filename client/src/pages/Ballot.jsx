@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import API from '../services/api'; // <-- 1. Updated Import
+import API from '../services/api';
+import './Ballot.css';
 
 const Ballot = () => {
     const { user, logout } = useContext(AuthContext);
@@ -16,7 +17,6 @@ const Ballot = () => {
     useEffect(() => {
         const fetchBallot = async () => {
             try {
-                // 2. Updated API Call
                 const response = await API.get('/voting/ballot');
                 const candidates = response.data.data;
 
@@ -80,7 +80,6 @@ const Ballot = () => {
         setError('');
 
         try {
-            // 3. Updated API Call (matching the expected backend format)
             await API.post('/voting/submit', { selectedCandidateIds: selectedIds });
             setSubmitStatus('success');
         } catch (err) {
@@ -157,43 +156,50 @@ const Ballot = () => {
                                 <h2 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2 uppercase tracking-wider">
                                     Select {role}
                                 </h2>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    {candidates.map((candidate) => (
-                                        <label
-                                            key={candidate._id}
-                                            className={`relative flex items-center p-4 cursor-pointer rounded-lg border-2 transition-all ${selections[role] === candidate._id
-                                                ? 'border-blue-600 bg-blue-50'
-                                                : 'border-gray-200 hover:border-blue-300'
-                                                }`}
-                                        >
-                                            <input
-                                                type="radio"
-                                                name={role}
-                                                className="sr-only"
-                                                onChange={() => handleSelect(role, candidate._id)}
-                                                checked={selections[role] === candidate._id}
-                                            />
-                                            <img
-                                                src={candidate.image || 'https://via.placeholder.com/150'}
-                                                alt={candidate.name}
-                                                className="w-12 h-12 rounded-full object-cover mr-4 bg-gray-200"
-                                            />
-                                            <div className="flex-1">
-                                                <h3 className="font-semibold text-gray-900">{candidate.name}</h3>
-                                                <p className="text-xs text-gray-500">
-                                                    Year {candidate.year} | Sec {candidate.section}
-                                                </p>
-                                            </div>
 
-                                            {/* Custom Radio Button Circle */}
-                                            <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selections[role] === candidate._id ? 'border-blue-600' : 'border-gray-400'
-                                                }`}>
-                                                {selections[role] === candidate._id && (
-                                                    <div className="w-2.5 h-2.5 rounded-full bg-blue-600"></div>
-                                                )}
+                                {/* Candidate Cards from 2nd Image */}
+                                <div className="candidate-cards-grid">
+                                    {candidates.map((candidate) => {
+                                        const isSelected = selections[role] === candidate._id;
+                                        return (
+                                            <div
+                                                key={candidate._id}
+                                                onClick={() => handleSelect(role, candidate._id)}
+                                                className={`candidate-card ${isSelected ? 'is-selected' : ''}`}
+                                            >
+                                                {/* Profile Picture */}
+                                                <div className="profile-pic">
+                                                    <img
+                                                        src={candidate.image || 'https://via.placeholder.com/150'}
+                                                        alt={candidate.name}
+                                                    />
+                                                </div>
+
+                                                {/* Bottom Sheet */}
+                                                <div className="bottom">
+                                                    <div className="content">
+                                                        <span className="name">{candidate.name}</span>
+                                                        <span className="about-me">
+                                                            Year {candidate.year} | Sec {candidate.section}
+                                                        </span>
+                                                    </div>
+
+                                                    <div className="bottom-bottom">
+                                                        <button
+                                                            type="button"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleSelect(role, candidate._id);
+                                                            }}
+                                                            className="cast-vote-btn"
+                                                        >
+                                                            {isSelected ? '✓ Vote Selected' : 'Cast My Vote'}
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </label>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             </section>
                         ))}
