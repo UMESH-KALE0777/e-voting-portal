@@ -14,31 +14,34 @@ function showVoteSuccessAnimation(onCompleteCallback) {
 
     // Get DOM elements
     const overlay = document.getElementById('vote-animation-overlay');
-    const scene = document.getElementById('vote-scene');
-    const ballot = document.getElementById('ballot-paper');
-    const box = document.getElementById('ballot-box');
+    const card = document.getElementById('vote-modal-card');
+    const paper = document.getElementById('ballot-paper');
+    const boxBack = document.getElementById('ballot-box-back');
+    const boxFront = document.getElementById('ballot-box-front');
+    const badge = document.getElementById('box-badge');
     const successMsg = document.getElementById('vote-success-message');
 
-    if (!overlay || !scene || !ballot || !box || !successMsg) {
+    if (!overlay || !card || !paper || !boxBack || !boxFront || !badge || !successMsg) {
         if (onCompleteCallback) onCompleteCallback();
         return;
     }
 
     // 1. Reset all states before starting
     gsap.set(overlay, { opacity: 0, pointerEvents: 'all' });
-    gsap.set(scene, { display: 'flex', opacity: 1, scale: 1 });
-    gsap.set(box, { scale: 0.8, y: 30, opacity: 0 });
-    gsap.set(ballot, { y: -150, rotation: -15, opacity: 0 }); // Starts high and rotated
-    gsap.set(successMsg, { display: 'none', opacity: 0, scale: 0.8 });
+    gsap.set(card, { scale: 0.88, opacity: 0 });
+    gsap.set(paper, { y: -115, opacity: 0 }); // Image 1 resting spot right above slot
+    gsap.set([boxBack, boxFront], { y: 0 });
+    gsap.set(badge, { scale: 1 });
+    gsap.set(successMsg, { opacity: 0, y: 10 });
 
     // 2. Build the GSAP Timeline
     const tl = gsap.timeline({
         onComplete: () => {
-            // Hold the success message for 1.5s, then fade out the whole overlay
+            // Hold the success message for 1.8s, then smoothly fade out
             gsap.to(overlay, {
                 opacity: 0,
-                duration: 0.5,
-                delay: 1.5,
+                duration: 0.4,
+                delay: 1.8,
                 onComplete: () => {
                     overlay.style.pointerEvents = 'none';
                     isVoteAnimationPlaying = false;
@@ -50,28 +53,26 @@ function showVoteSuccessAnimation(onCompleteCallback) {
         }
     });
 
-    tl.to(overlay, { opacity: 1, duration: 0.3 })
-        // Step 1: Voting box smoothly pops up
-        .to(box, { scale: 1, y: 0, opacity: 1, duration: 0.5, ease: 'back.out(1.2)' })
-
-        // Step 2: Ballot appears and floats above the box
-        .to(ballot, { opacity: 1, y: -90, rotation: 5, duration: 0.4, ease: 'power2.out' })
-
-        // Step 3: Ballot arcs down into the slot
-        .to(ballot, {
-            y: 35, // Moves down deep enough to hide behind the front layer
-            rotation: 0,
-            duration: 0.8,
+    tl.to(overlay, { opacity: 1, duration: 0.25 })
+        // Step 1: White modal card pops in with smooth back ease
+        .to(card, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.2)' }, '-=0.1')
+        // Ballot paper appears right above the slot (Image 1 state)
+        .to(paper, { opacity: 1, duration: 0.2 }, '-=0.15')
+        // Brief pause at Image 1 position so voter clearly recognizes the ballot
+        .to({}, { duration: 0.25 })
+        // Step 2: Ballot paper slides straight down into the slot (through Image 2 into box)
+        .to(paper, {
+            y: 25, // Slides fully into the box under the front lip
+            duration: 0.85,
             ease: 'power2.inOut'
         })
-
-        // Step 4: The whole box/ballot scene scales down and fades out
-        .to(scene, { scale: 0.8, opacity: 0, duration: 0.3, ease: 'power2.in' }, '+=0.2')
-
-        // Step 5: Swap visibility and pop in the success message
-        .set(scene, { display: 'none' })
-        .set(successMsg, { display: 'block' })
-        .to(successMsg, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.5)' });
+        .set(paper, { opacity: 0 })
+        // Step 3: Box bounces gently upon receiving the ballot, and the blue badge pops
+        .to([boxBack, boxFront], { y: 4, duration: 0.1, yoyo: true, repeat: 1, ease: 'power1.inOut' })
+        .to(badge, { scale: 1.25, duration: 0.25, ease: 'back.out(2)' }, '-=0.1')
+        .to(badge, { scale: 1, duration: 0.2, ease: 'power1.out' })
+        // Step 4: Success confirmation text pops in
+        .to(successMsg, { opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.4)' }, '-=0.1');
 }
 
 const Ballot = () => {
@@ -166,36 +167,51 @@ const Ballot = () => {
         <div className="min-h-screen bg-gray-50 pb-12 relative">
             {/* GSAP Full-Screen Animation Overlay */}
             <div id="vote-animation-overlay">
-                <div id="vote-scene">
-                    <div id="ballot-paper">
-                        <div className="ballot-line"></div>
-                        <div className="ballot-line short"></div>
-                        <div className="ballot-check">✓</div>
-                    </div>
-                    <div id="ballot-box">
-                        <div className="box-back"></div>
-                        <div className="box-front">
-                            <svg
-                                className="box-logo"
-                                viewBox="-1 -0.9968924522399902 26.000001907348633 26.000001907348633"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
+                <div id="vote-modal-card">
+                    <div id="vote-scene">
+                        {/* Box Back Layer: Lid and Slot (z-index: 1) */}
+                        <div id="ballot-box-back">
+                            <div className="box-lid-back">
+                                <div className="box-slot-hole"></div>
+                            </div>
+                            <div className="box-body-back"></div>
+                        </div>
+
+                        {/* Ballot Paper (z-index: 2 - sits between box back and box front) */}
+                        <div id="ballot-paper">
+                            <div className="ballot-paper-header"></div>
+                            <div className="ballot-paper-body">
+                                <div className="ballot-checkbox-row">
+                                    <div className="ballot-checkbox">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                                            <polyline points="6 12 10 16 18 8" />
+                                        </svg>
+                                    </div>
+                                    <div className="ballot-line-title"></div>
+                                </div>
+                                <div className="ballot-line l1"></div>
+                                <div className="ballot-line l2"></div>
+                                <div className="ballot-line l3"></div>
+                            </div>
+                        </div>
+
+                        {/* Box Front Layer: Lid front lip and Box body with badge (z-index: 3) */}
+                        <div id="ballot-box-front">
+                            <div className="box-lid-front-lip"></div>
+                            <div className="box-body">
+                                <div className="box-badge" id="box-badge">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <polyline points="6 12 10.5 16.5 18.5 8" />
+                                    </svg>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div id="vote-success-message">
-                    <div className="success-icon">
-                        <svg viewBox="-0.5900001525878906 1.5900001525878906 25.59000015258789 21.40999984741211" fill="white">
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
-                        </svg>
+                    <div id="vote-success-message">
+                        <h2>Vote Cast Successfully</h2>
+                        <p>Your vote has been recorded.</p>
                     </div>
-                    <h2>Vote Cast Successfully</h2>
-                    <p>Your vote has been recorded.</p>
                 </div>
             </div>
             {/* Header */}
