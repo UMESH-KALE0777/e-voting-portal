@@ -60,11 +60,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative bg-slate-950 px-4 sm:px-6 lg:px-8 py-10 selection:bg-sky-500 selection:text-white overflow-hidden">
-      {/* Subtle ambient lighting in background matching the theme */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-sky-600/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
-
+    <div className="min-h-screen flex items-center justify-center relative bg-black px-4 sm:px-6 lg:px-8 py-10 selection:bg-sky-500 selection:text-white overflow-hidden">
       {/* Main Alert Login Container */}
       <div className={`login-alert-container ${isAnimating ? 'is-animating' : ''}`}>
         
