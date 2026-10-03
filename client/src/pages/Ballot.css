@@ -22,7 +22,7 @@
   border-radius: 32px;
   padding: 3px;
   position: relative;
-  box-shadow: rgba(141, 177, 205, 0.618) 0px 40px 30px -25px;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 153, 255, 0.15);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   user-select: none;
@@ -33,14 +33,14 @@
 /* Card hover & selected states */
 .candidate-card:hover {
   border-top-left-radius: 55px;
-  box-shadow: rgba(141, 177, 205, 0.85) 0px 50px 35px -20px;
+  box-shadow: 0 20px 40px -10px rgba(0, 153, 255, 0.4), 0 0 25px rgba(0, 255, 255, 0.2);
   transform: translateY(-2px);
 }
 
 .candidate-card.is-selected {
   border-top-left-radius: 55px;
   border-color: rgb(0, 153, 255);
-  box-shadow: rgba(0, 153, 255, 0.4) 0px 50px 35px -20px, 0 0 0 3px rgba(0, 255, 255, 0.4);
+  box-shadow: rgba(0, 153, 255, 0.5) 0px 25px 35px -15px, 0 0 0 3px rgba(0, 255, 255, 0.45);
 }
 
 /* Selected Badge at top right */

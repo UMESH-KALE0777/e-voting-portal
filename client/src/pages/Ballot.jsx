@@ -111,15 +111,25 @@ const Ballot = () => {
 
     if (user?.hasVoted) {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-                <h2 className="text-2xl font-bold text-red-600 mb-2">Access Denied</h2>
-                <p className="text-gray-600 mb-6">Your vote has already been securely recorded. You cannot vote twice.</p>
-                <button
-                    onClick={() => navigate('/results')}
-                    className="bg-blue-600 text-white py-2 px-6 rounded-lg font-medium"
-                >
-                    View Live Results
-                </button>
+            <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4">
+                <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-2xl max-w-md w-full text-center shadow-2xl">
+                    <div className="w-14 h-14 rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center mx-auto mb-4 text-rose-400">
+                        <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <h2 className="text-2xl font-bold text-white mb-2">Access Denied</h2>
+                    <p className="text-zinc-400 mb-6">Your vote has already been securely recorded. You cannot vote twice.</p>
+                    <button
+                        onClick={() => navigate('/results')}
+                        className="w-full text-white py-3 px-6 rounded-xl font-bold shadow-lg hover:shadow-cyan-500/25 transition-all cursor-pointer"
+                        style={{
+                            background: 'linear-gradient(-45deg, rgb(0, 153, 255) 0%, cyan 100%)'
+                        }}
+                    >
+                        View Live Results
+                    </button>
+                </div>
             </div>
         );
     }
@@ -160,11 +170,18 @@ const Ballot = () => {
     };
 
     if (loading) {
-        return <div className="min-h-screen flex items-center justify-center text-xl font-semibold text-gray-600">Loading your secure ballot...</div>;
+        return (
+            <div className="min-h-screen bg-black flex flex-col items-center justify-center text-zinc-300 gap-3">
+                <svg className="w-8 h-8 animate-spin text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span className="text-lg font-medium">Loading your secure ballot...</span>
+            </div>
+        );
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-12 relative">
+        <div className="min-h-screen bg-black text-white pb-16 relative">
             {/* GSAP Full-Screen Animation Overlay */}
             <div id="vote-animation-overlay">
                 <div id="vote-modal-card">
@@ -215,15 +232,18 @@ const Ballot = () => {
                 </div>
             </div>
             {/* Header */}
-            <header className="bg-white shadow-sm sticky top-0 z-10">
+            <header className="bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/80 sticky top-0 z-10">
                 <div className="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
                     <div>
-                        <h1 className="text-xl font-bold text-gray-900">Official Ballot</h1>
-                        <p className="text-sm text-gray-500">
-                            Voter: {user?.usn} | Year {user?.year} | Sec {user?.section}
+                        <h1 className="text-xl font-bold text-white tracking-tight">Official Ballot</h1>
+                        <p className="text-sm text-zinc-400">
+                            Voter: <span className="font-mono text-cyan-400 font-semibold">{user?.usn}</span> | Year {user?.year} | Sec {user?.section}
                         </p>
                     </div>
-                    <button onClick={handleLogout} className="text-sm text-gray-600 hover:text-gray-900 font-medium">
+                    <button
+                        onClick={handleLogout}
+                        className="text-sm text-zinc-400 hover:text-white px-3 py-1.5 rounded-lg border border-zinc-800 hover:border-zinc-700 bg-zinc-900/60 transition-all font-medium cursor-pointer"
+                    >
                         Logout
                     </button>
                 </div>
@@ -231,22 +251,44 @@ const Ballot = () => {
 
             {/* Main Ballot Content */}
             <main className="max-w-4xl mx-auto px-4 mt-8">
+                {/* Top Instruction Banner */}
+                <div className="bg-sky-950/40 border border-sky-500/30 rounded-2xl p-4 sm:p-5 mb-8 flex items-start sm:items-center gap-3.5 shadow-lg backdrop-blur-sm">
+                    <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center shrink-0 text-cyan-400">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div className="flex-1">
+                        <p className="text-sm sm:text-base text-sky-100 font-medium leading-relaxed">
+                            After selecting the candidate, cast your vote by clicking the <span className="text-cyan-400 font-bold">&apos;Cast My Vote&apos;</span> button at the bottom.
+                        </p>
+                    </div>
+                </div>
+
                 {error && (
-                    <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6 text-sm font-medium border border-red-100">
-                        {error}
+                    <div className="bg-rose-950/50 text-rose-300 p-4 rounded-xl mb-6 text-sm font-medium border border-rose-800/60 flex items-center gap-2">
+                        <svg className="w-5 h-5 shrink-0 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>{error}</span>
                     </div>
                 )}
 
                 {Object.keys(candidatesByRole).length === 0 ? (
-                    <div className="text-center py-12 text-gray-500 bg-white rounded-lg shadow-sm">
+                    <div className="text-center py-12 text-zinc-400 bg-zinc-900 rounded-xl border border-zinc-800">
                         No candidates are currently available for your cohort.
                     </div>
                 ) : (
                     <div className="space-y-8">
                         {Object.entries(candidatesByRole).map(([role, candidates]) => (
-                            <section key={role} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                                <h2 className="text-lg font-bold text-gray-900 mb-4 border-b pb-2 uppercase tracking-wider">
-                                    Select {role}
+                            <section key={role} className="bg-zinc-900/90 p-6 sm:p-7 rounded-2xl shadow-xl border border-zinc-800/80">
+                                <h2 className="text-lg font-bold text-white mb-5 border-b border-zinc-800 pb-3 uppercase tracking-wider flex items-center justify-between">
+                                    <span>Select {role}</span>
+                                    {selections[role] && (
+                                        <span className="text-xs normal-case font-semibold text-cyan-400 bg-cyan-950/60 border border-cyan-500/30 px-2.5 py-1 rounded-full">
+                                            ✓ Candidate Selected
+                                        </span>
+                                    )}
                                 </h2>
 
                                 {/* Candidate Cards from 2nd Image */}
@@ -299,13 +341,33 @@ const Ballot = () => {
                 )}
 
                 {Object.keys(candidatesByRole).length > 0 && (
-                    <div className="mt-8 flex justify-end">
+                    <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-zinc-900/70 border border-zinc-800">
+                        <p className="text-xs sm:text-sm text-zinc-400 text-center sm:text-left">
+                            Ready to submit? Once submitted, your vote is encrypted and final.
+                        </p>
                         <button
                             onClick={handleSubmit}
                             disabled={submitStatus === 'submitting'}
-                            className="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-blue-700 shadow-md transition-all disabled:opacity-50"
+                            className="w-full sm:w-auto text-white px-9 py-3.5 rounded-xl font-bold text-base shadow-lg hover:shadow-cyan-500/25 active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+                            style={{
+                                background: 'linear-gradient(-45deg, rgb(0, 153, 255) 0%, cyan 100%)'
+                            }}
                         >
-                            {submitStatus === 'submitting' ? 'Submitting Vote...' : 'Cast My Vote'}
+                            {submitStatus === 'submitting' ? (
+                                <>
+                                    <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                    <span>Submitting Vote...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span>Cast My Vote</span>
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </>
+                            )}
                         </button>
                     </div>
                 )}
