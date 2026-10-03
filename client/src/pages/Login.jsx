@@ -60,10 +60,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative bg-slate-950 px-4 sm:px-6 lg:px-8 py-10 selection:bg-orange-500 selection:text-white overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center relative bg-slate-950 px-4 sm:px-6 lg:px-8 py-10 selection:bg-sky-500 selection:text-white overflow-hidden">
       {/* Subtle ambient lighting in background matching the theme */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-rose-600/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-sky-600/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
       {/* Main Alert Login Container */}
       <div className={`login-alert-container ${isAnimating ? 'is-animating' : ''}`}>
@@ -99,7 +99,7 @@ const Login = () => {
           <div className="mb-6">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
               AIML Elections
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 border border-orange-200">
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">
                 2026
               </span>
             </h1>
@@ -138,7 +138,7 @@ const Login = () => {
                   value={usn}
                   onChange={(e) => setUsn(e.target.value.toUpperCase())}
                   placeholder="E.G. 1PD22AI001"
-                  className="w-full pl-10 pr-4 py-3 bg-white/90 border border-amber-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 transition-all font-mono uppercase shadow-sm"
+                  className="w-full pl-10 pr-4 py-3 bg-white/90 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/25 focus:border-sky-500 transition-all font-mono uppercase shadow-sm"
                 />
               </div>
             </div>
@@ -154,7 +154,7 @@ const Login = () => {
                   required
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
-                  className="w-full px-3.5 py-3 bg-white/90 border border-amber-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 transition-all cursor-pointer shadow-sm"
+                  className="w-full px-3.5 py-3 bg-white/90 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/25 focus:border-sky-500 transition-all cursor-pointer shadow-sm"
                 >
                   <option value="" disabled>Select Year</option>
                   <option value="1">1st Year</option>
@@ -173,7 +173,7 @@ const Login = () => {
                   required
                   value={section}
                   onChange={(e) => setSection(e.target.value)}
-                  className="w-full px-3.5 py-3 bg-white/90 border border-amber-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/25 focus:border-orange-500 transition-all cursor-pointer shadow-sm"
+                  className="w-full px-3.5 py-3 bg-white/90 border border-slate-200 rounded-xl text-sm text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/25 focus:border-sky-500 transition-all cursor-pointer shadow-sm"
                 >
                   <option value="" disabled>Select Section</option>
                   <option value="A">Section A</option>
@@ -184,14 +184,14 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Access Ballot Button with Gradient matching Alert styling */}
+            {/* Access Ballot Button with Gradient matching Card styling */}
             <div className="pt-2">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full relative group overflow-hidden flex items-center justify-center gap-2.5 text-white font-semibold py-3.5 px-6 rounded-xl text-sm transition-all duration-300 shadow-md hover:shadow-orange-500/30 hover:shadow-lg active:scale-[0.99] disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full relative group overflow-hidden flex items-center justify-center gap-2.5 text-white font-semibold py-3.5 px-6 rounded-xl text-sm transition-all duration-300 shadow-md hover:shadow-sky-500/35 hover:shadow-lg active:scale-[0.99] disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer"
                 style={{
-                  background: 'linear-gradient(135deg, #ff8c00, #ff4d4d)'
+                  background: 'linear-gradient(-45deg, rgb(0, 153, 255) 0%, cyan 100%)'
                 }}
               >
                 {/* Subtle highlight sheen */}
@@ -217,9 +217,9 @@ const Login = () => {
           </form>
 
           {/* Footer note */}
-          <div className="mt-6 pt-4 border-t border-orange-200/50 flex items-center justify-between text-[11px] text-slate-500">
+          <div className="mt-6 pt-4 border-t border-slate-200/60 flex items-center justify-between text-[11px] text-slate-500">
             <span>Encrypted Voting Protocol</span>
-            <span className="font-mono text-orange-700/80">Secured • One Vote Per USN</span>
+            <span className="font-mono text-sky-700/80">Secured • One Vote Per USN</span>
           </div>
         </div>
 
