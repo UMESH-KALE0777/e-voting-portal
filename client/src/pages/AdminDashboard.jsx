@@ -393,6 +393,8 @@ const AdminDashboard = () => {
                     <option value="General Secretary">General Secretary</option>
                     <option value="Class Representative">Class Representative</option>
                     <option value="Ladies Representative">Ladies Representative</option>
+                    <option value="Sports Secretary">Sports Secretary</option>
+                    <option value="Cultural Secretary">Cultural Secretary</option>
                   </select>
                 </div>
 
