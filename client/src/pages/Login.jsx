@@ -94,7 +94,7 @@ const Login = () => {
           {/* Heading */}
           <div className="mb-6">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-              AIML Elections
+              ALPHA NEURON ELECTIONS
               <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">
                 2026
               </span>
@@ -224,7 +224,7 @@ const Login = () => {
       {/* Footer Info */}
       <div className="absolute bottom-4 w-full text-center z-10 pointer-events-none">
         <p className="text-xs text-slate-400/80 font-medium tracking-wide">
-          Department of Artificial Intelligence &amp; Machine Learning
+          ALPHA NEURON ELECTIONS • Dept. of AI &amp; Machine Learning
         </p>
       </div>
     </div>

@@ -42,8 +42,11 @@ const AdminLogin = () => {
                     <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mb-4 border border-blue-500/30">
                         <ShieldCheck className="w-8 h-8 text-blue-400" />
                     </div>
+                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider mb-2">
+                        ALPHA NEURON ELECTIONS
+                    </span>
                     <h2 className="text-2xl font-bold text-white tracking-wide">System Administration</h2>
-                    <p className="text-slate-400 text-sm mt-2">Restricted access portal</p>
+                    <p className="text-slate-400 text-sm mt-1">Restricted access portal</p>
                 </div>
 
                 <form onSubmit={handleLogin} className="space-y-6">

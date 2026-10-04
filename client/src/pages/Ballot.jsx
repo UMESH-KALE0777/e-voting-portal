@@ -227,7 +227,7 @@ const Ballot = () => {
 
                     <div id="vote-success-message">
                         <h2>Vote Cast Successfully</h2>
-                        <p>Your vote has been recorded.</p>
+                        <p>Your vote has been recorded for ALPHA NEURON ELECTIONS.</p>
                     </div>
                 </div>
             </div>
@@ -235,6 +235,12 @@ const Ballot = () => {
             <header className="bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/80 sticky top-0 z-10">
                 <div className="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
                     <div>
+                        <div className="flex items-center gap-2 mb-1">
+                            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-cyan-950/80 text-cyan-400 border border-cyan-800/60 uppercase tracking-wider">
+                                ALPHA NEURON ELECTIONS
+                            </span>
+                            <span className="text-[11px] text-zinc-500 font-mono">2026</span>
+                        </div>
                         <h1 className="text-xl font-bold text-white tracking-tight">Official Ballot</h1>
                         <p className="text-sm text-zinc-400">
                             Voter: <span className="font-mono text-cyan-400 font-semibold">{user?.usn}</span> | Year {user?.year} | Sec {user?.section}

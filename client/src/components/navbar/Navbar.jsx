@@ -80,9 +80,9 @@ const Navbar = () => {
             className="w-9 h-9 rounded-full object-cover bg-green-500 p-1 shadow-md"
           />
           <div>
-            <span className="text-sm font-bold text-pink-500 leading-none">SecureVote</span>
+            <span className="text-sm font-bold text-sky-600 leading-none">ALPHA NEURON</span>
             <p className="text-xs text-gray-400 leading-none mt-0.5">
-              {user?.role === "ADMIN" ? "Election Commission" : "Digital Elections"}
+              {user?.role === "ADMIN" ? "Election Commission" : "ALPHA NEURON ELECTIONS"}
             </p>
           </div>
         </Link>
