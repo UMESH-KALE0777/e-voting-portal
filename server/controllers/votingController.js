@@ -19,10 +19,10 @@ const getBallot = async (req, res) => {
         { role: { $regex: /^(GS|General Secretary)$/i } },
         
         // DOOR 2: Cohort-Specific Roles (CR, LR, Cultural, Sports)
-        // If they are not GS, they MUST perfectly match the voter's year and section
+        // Matches the voter's year and either their specific section or a Combined cohort section
         { 
           year: voterYear, 
-          section: { $regex: new RegExp(`^${voterSection}$`, 'i') }
+          section: { $regex: new RegExp(`^(${voterSection}|Combined)$`, 'i') }
         }
       ]
     });

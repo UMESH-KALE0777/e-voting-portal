@@ -146,11 +146,11 @@ const AdminDashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-white shadow-inner">
-              A
+              α
             </div>
             <div>
-              <h1 className="text-lg font-semibold leading-tight">Election Control Center</h1>
-              <p className="text-xs text-slate-400">Administrator Console</p>
+              <h1 className="text-lg font-semibold leading-tight">ALPHA NEURON ELECTIONS</h1>
+              <p className="text-xs text-slate-400">Election Control Center • Administrator Console</p>
             </div>
           </div>
           <button
@@ -393,6 +393,8 @@ const AdminDashboard = () => {
                     <option value="General Secretary">General Secretary</option>
                     <option value="Class Representative">Class Representative</option>
                     <option value="Ladies Representative">Ladies Representative</option>
+                    <option value="Sports Secretary">Sports Secretary</option>
+                    <option value="Cultural Secretary">Cultural Secretary</option>
                   </select>
                 </div>
 

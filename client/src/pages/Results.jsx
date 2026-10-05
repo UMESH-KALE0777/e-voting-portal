@@ -39,8 +39,11 @@ const Results = () => {
     <div className="min-h-screen bg-gray-50 pb-12">
       <header className="bg-blue-900 text-white shadow-md py-6 mb-8">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-3xl font-bold">Live Election Results</h1>
-          <p className="text-blue-200 mt-2">AIML Department</p>
+          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-800/80 text-blue-200 border border-blue-700 uppercase tracking-wider">
+            ALPHA NEURON ELECTIONS
+          </span>
+          <h1 className="text-3xl font-bold mt-2">Live Election Results</h1>
+          <p className="text-blue-200 mt-1">ALPHA NEURON ELECTIONS • 2026</p>
         </div>
       </header>
 
