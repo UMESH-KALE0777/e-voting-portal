@@ -12,7 +12,7 @@ const CandidateDetails = ({ candidate }) => {
         <div className="relative inline-block mb-3 sm:mb-4">
           {candidate.image ? (
             <img
-              src={`http://localhost:5000/uploads/candidates/${candidate.image}`}
+              src={`https://e-voting-portal-toln.onrender.com/uploads/candidates/${candidate.image}`}
               alt={candidate.name}
               className="w-20 h-20 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-white/30 mx-auto"
             />

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import api from "../../utils/api";
 
-// const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5000";
+// const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || "https://e-voting-portal-toln.onrender.com";
 
 const getInitials = (name) =>
   name?.split(" ").map((n) => n[0]).join("").toUpperCase() || "?";

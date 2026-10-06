@@ -34,7 +34,7 @@ const CompareCandidates = ({ candidates = [] }) => {
                   <div className="flex flex-col items-center gap-2">
                     {c.image ? (
                       <img
-                        src={`http://localhost:5000/uploads/candidates/${c.image}`}
+                        src={`https://e-voting-portal-toln.onrender.com/uploads/candidates/${c.image}`}
                         alt={c.name}
                         className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
                       />
