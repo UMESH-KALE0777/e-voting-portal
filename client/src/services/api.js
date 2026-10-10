@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 1. INITIALIZE FIRST
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api', // Ensure this matches your backend URL
+  baseURL: import.meta.env.VITE_API_URL || 'https://e-voting-portal-toln.onrender.com/api',
 });
 
 // 2. ADD INTERCEPTORS SECOND

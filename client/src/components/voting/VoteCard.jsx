@@ -2,7 +2,7 @@
  
 import { useState } from "react";
 
-// const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5000";
+// const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || "https://e-voting-portal-toln.onrender.com";
 
 const VoteCard = ({ candidate, onVote, hasVoted = false, isLoading = false }) => {
   const [imgError, setImgError] = useState(false);

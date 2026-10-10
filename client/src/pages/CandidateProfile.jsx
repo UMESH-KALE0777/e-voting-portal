@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../utils/api"; 
 import { ElectionContext } from "../context/ElectionContext";
 
-// const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5000";
+// const BASE_URL = import.meta.env.VITE_API_URL?.replace("/api", "") || "https://e-voting-portal-toln.onrender.com";
 
 const partySymbols = {
   "BJP": "🪷", "Congress": "✋", "BSP": "🐘", "SP": "🚲",

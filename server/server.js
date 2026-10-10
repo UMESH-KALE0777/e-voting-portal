@@ -13,22 +13,12 @@ const app = express();
 // Connect Database
 connectDB();
 
-// SECURITY: Only allow your specific frontend URLs to access this backend
-const allowedOrigins = [
-  'http://localhost:5173', // Keep this for your local testing
-  'https://e-voting-portal.vercel.app' // REPLACE THIS with your actual Vercel URL
-];
-
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests) 
-    // or requests from our allowed list
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: [
+    "http://localhost:5173", 
+    "https://e-voting-portal-nu.vercel.app",
+    process.env.CLIENT_URL
+  ],
   credentials: true
 }));
 
