@@ -22,6 +22,7 @@ const AdminDashboard = () => {
 
   // Results & API State
   const [candidates, setCandidates] = useState([]);
+  const [selectedYearFilter, setSelectedYearFilter] = useState('ALL');
   const [loading, setLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -138,6 +139,142 @@ const AdminDashboard = () => {
   const leadingCandidate = candidates.length > 0
     ? [...candidates].sort((a, b) => (b.voteCount || 0) - (a.voteCount || 0))[0]
     : null;
+
+  // Role and grouping helpers
+  const isGSRole = (role) => {
+    if (!role) return false;
+    const r = role.trim().toLowerCase();
+    return r === 'gs' || r === 'general secretary' || r.includes('general secretary');
+  };
+
+  const gsCandidates = candidates
+    .filter((c) => isGSRole(c.role))
+    .sort((a, b) => (b.voteCount || 0) - (a.voteCount || 0));
+
+  const gsTotalVotes = gsCandidates.reduce((sum, c) => sum + (c.voteCount || 0), 0);
+
+  const cohortCandidates = candidates.filter((c) => !isGSRole(c.role));
+
+  const distinctYears = Array.from(new Set(cohortCandidates.map((c) => Number(c.year)).filter(Boolean)));
+  const allYears = Array.from(new Set([...distinctYears, 1, 2, 3, 4])).sort((a, b) => a - b);
+
+  const rolePriority = {
+    'class representative': 1,
+    'cr': 1,
+    'ladies representative': 2,
+    'lr': 2,
+    'sports secretary': 3,
+    'cultural secretary': 4,
+  };
+
+  const renderCandidateCard = (c) => {
+    const percentage = totalVotes > 0 ? ((c.voteCount / totalVotes) * 100).toFixed(1) : 0;
+    const isLeader = leadingCandidate?._id === c._id && c.voteCount > 0;
+
+    return (
+      <div key={c._id} className="p-4 border border-slate-200/80 rounded-xl hover:border-slate-300 transition-all bg-white shadow-xs">
+        <div className="flex items-center justify-between gap-4">
+
+          {/* Candidate Info */}
+          <div className="flex items-center gap-4 min-w-0">
+            {c.image ? (
+              <img src={c.image} alt={c.name} className="w-12 h-12 rounded-full object-cover border border-slate-200 shrink-0" />
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold shrink-0">
+                {c.name.charAt(0)}
+              </div>
+            )}
+
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <h3 className="font-semibold text-slate-900 truncate text-base">{c.name}</h3>
+                {isLeader && (
+                  <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 rounded-full border border-amber-200">
+                    Leader
+                  </span>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2 mt-1 text-xs text-slate-500">
+                <span className="font-medium text-slate-700">{c.role}</span>
+                <span>&bull;</span>
+                <span>Year {c.year}</span>
+                <span>&bull;</span>
+                <span>Sec {c.section}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Vote Statistics */}
+          <div className="text-right shrink-0">
+            <span className="text-2xl font-black text-slate-900">{c.voteCount || 0}</span>
+            <span className="text-xs text-slate-400 block font-medium">
+              {percentage}% of total
+            </span>
+          </div>
+        </div>
+
+        {/* Relative Progress Bar */}
+        <div className="w-full bg-slate-100 h-2 rounded-full mt-3 overflow-hidden">
+          <div
+            className={`h-full transition-all duration-500 rounded-full ${isLeader ? 'bg-amber-500' : 'bg-blue-600'}`}
+            style={{ width: `${percentage}%` }}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const renderSectionCandidateList = (candidatesList, emptyLabel) => {
+    if (candidatesList.length === 0) {
+      return (
+        <div className="text-center py-8 text-slate-400 bg-white/60 rounded-xl border border-dashed border-slate-200">
+          <p className="text-xs font-medium">{emptyLabel}</p>
+        </div>
+      );
+    }
+
+    const grouped = {};
+    const rolesInGroup = [];
+
+    candidatesList.forEach((c) => {
+      const roleName = c.role || 'Other';
+      if (!grouped[roleName]) {
+        grouped[roleName] = [];
+        rolesInGroup.push(roleName);
+      }
+      grouped[roleName].push(c);
+    });
+
+    rolesInGroup.sort((a, b) => {
+      const pA = rolePriority[a.toLowerCase()] || 99;
+      const pB = rolePriority[b.toLowerCase()] || 99;
+      return pA - pB;
+    });
+
+    return (
+      <div className="space-y-4">
+        {rolesInGroup.map((roleName) => {
+          const sortedCandidates = [...grouped[roleName]].sort((a, b) => (b.voteCount || 0) - (a.voteCount || 0));
+          return (
+            <div key={roleName} className="space-y-2">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider bg-slate-200/60 px-2 py-0.5 rounded-md">
+                  {roleName}
+                </span>
+                <span className="text-[11px] text-slate-400 font-medium">
+                  {sortedCandidates.length} {sortedCandidates.length === 1 ? 'Candidate' : 'Candidates'}
+                </span>
+              </div>
+              <div className="space-y-2">
+                {sortedCandidates.map((c) => renderCandidateCard(c))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased">
@@ -289,69 +426,169 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Candidate List Render */}
-                <div className="space-y-4">
+                <div>
                   {candidates.length === 0 ? (
                     <div className="text-center py-12 text-slate-400">
                       <p className="text-sm">No candidate nominations registered yet.</p>
                     </div>
                   ) : (
-                    candidates.map((c) => {
-                      const percentage = totalVotes > 0 ? ((c.voteCount / totalVotes) * 100).toFixed(1) : 0;
-                      const isLeader = leadingCandidate?._id === c._id && c.voteCount > 0;
-
-                      return (
-                        <div key={c._id} className="p-4 border border-slate-200/80 rounded-xl hover:border-slate-300 transition-all bg-white">
-                          <div className="flex items-center justify-between gap-4">
-
-                            {/* Candidate Info */}
-                            <div className="flex items-center gap-4 min-w-0">
-                              {c.image ? (
-                                <img src={c.image} alt={c.name} className="w-12 h-12 rounded-full object-cover border border-slate-200 shrink-0" />
-                              ) : (
-                                <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold shrink-0">
-                                  {c.name.charAt(0)}
-                                </div>
-                              )}
-
-                              <div className="min-w-0">
-                                <div className="flex items-center gap-2">
-                                  <h3 className="font-semibold text-slate-900 truncate text-base">{c.name}</h3>
-                                  {isLeader && (
-                                    <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 rounded-full border border-amber-200">
-                                      Leader
-                                    </span>
-                                  )}
-                                </div>
-
-                                <div className="flex items-center gap-2 mt-1 text-xs text-slate-500">
-                                  <span className="font-medium text-slate-700">{c.role}</span>
-                                  <span>&bull;</span>
-                                  <span>Year {c.year}</span>
-                                  <span>&bull;</span>
-                                  <span>Sec {c.section}</span>
-                                </div>
-                              </div>
+                    <div className="space-y-8">
+                      {/* SECTION 1: GENERAL SECRETARY (GS) */}
+                      <div className="bg-slate-50/80 rounded-2xl border border-slate-200/90 p-5">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 mb-5 border-b border-slate-200">
+                          <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xs shadow-sm">
+                              GS
                             </div>
-
-                            {/* Vote Statistics */}
-                            <div className="text-right shrink-0">
-                              <span className="text-2xl font-black text-slate-900">{c.voteCount || 0}</span>
-                              <span className="text-xs text-slate-400 block font-medium">
-                                {percentage}% of total
-                              </span>
+                            <div>
+                              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                                General Secretary (GS)
+                                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                                  Universal Role
+                                </span>
+                              </h3>
+                              <p className="text-xs text-slate-500">Department-wide leadership contest across all years and sections</p>
                             </div>
                           </div>
-
-                          {/* Relative Progress Bar */}
-                          <div className="w-full bg-slate-100 h-2 rounded-full mt-3 overflow-hidden">
-                            <div
-                              className={`h-full transition-all duration-500 rounded-full ${isLeader ? 'bg-amber-500' : 'bg-blue-600'}`}
-                              style={{ width: `${percentage}%` }}
-                            />
+                          <div className="text-xs font-semibold text-slate-600 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs">
+                            {gsCandidates.length} {gsCandidates.length === 1 ? 'Candidate' : 'Candidates'} &bull; {gsTotalVotes} Votes
                           </div>
                         </div>
-                      );
-                    })
+
+                        {gsCandidates.length === 0 ? (
+                          <div className="text-center py-8 text-slate-400 bg-white rounded-xl border border-dashed border-slate-200">
+                            <p className="text-xs">No General Secretary nominations registered yet.</p>
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {gsCandidates.map((c) => renderCandidateCard(c))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* SECTION 2: COHORT ELECTIONS (CR, LR, CULTURAL & SPORTS) */}
+                      <div className="space-y-6">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                          <div>
+                            <h3 className="text-base font-bold text-slate-900">Cohort Elections</h3>
+                            <p className="text-xs text-slate-500">Section-wise contest for CR, LR, Cultural &amp; Sports Secretary</p>
+                          </div>
+
+                          {/* Year Filter Tabs */}
+                          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+                            {['ALL', ...allYears.map(String)].map((yr) => {
+                              const count = yr === 'ALL'
+                                ? cohortCandidates.length
+                                : cohortCandidates.filter((c) => Number(c.year) === Number(yr)).length;
+                              return (
+                                <button
+                                  key={yr}
+                                  onClick={() => setSelectedYearFilter(yr)}
+                                  className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                                    selectedYearFilter === yr
+                                      ? 'bg-white text-blue-600 shadow-xs'
+                                      : 'text-slate-600 hover:text-slate-900'
+                                  }`}
+                                >
+                                  {yr === 'ALL' ? `All Years (${count})` : `Year ${yr} (${count})`}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Year Tables Render */}
+                        <div className="space-y-8">
+                          {(selectedYearFilter === 'ALL' ? allYears : [Number(selectedYearFilter)]).map((yearNum) => {
+                            const yearCandidates = cohortCandidates.filter((c) => Number(c.year) === yearNum);
+                            const secACandidates = yearCandidates.filter((c) => (c.section || '').trim().toUpperCase() === 'A');
+                            const secBCandidates = yearCandidates.filter((c) => (c.section || '').trim().toUpperCase() === 'B');
+
+                            // Check for any other sections (Section C, Combined, etc.)
+                            const otherSectionNames = Array.from(new Set(
+                              yearCandidates
+                                .map((c) => (c.section || '').trim().toUpperCase())
+                                .filter((s) => s !== 'A' && s !== 'B' && s !== '')
+                            ));
+
+                            return (
+                              <div key={yearNum} className="space-y-4">
+                                {/* Year Heading */}
+                                <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-6 h-6 rounded-md bg-slate-900 text-white flex items-center justify-center font-bold text-xs">
+                                      Y{yearNum}
+                                    </div>
+                                    <h4 className="text-sm font-bold text-slate-900">Year {yearNum}</h4>
+                                  </div>
+                                  <span className="text-xs text-slate-500 font-medium">
+                                    {yearCandidates.length} {yearCandidates.length === 1 ? 'Candidate' : 'Candidates'}
+                                  </span>
+                                </div>
+
+                                {/* Side-by-side section tables: Section A on one side and Section B on one side */}
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                  {/* 1 Year Section A in one side */}
+                                  <div className="bg-slate-50/70 rounded-xl border border-slate-200/90 p-4 flex flex-col">
+                                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
+                                      <div className="flex items-center gap-2">
+                                        <span className="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                                        <h5 className="font-bold text-slate-900 text-sm">Year {yearNum} &bull; Section A</h5>
+                                      </div>
+                                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white text-slate-600 border border-slate-200 shadow-2xs">
+                                        {secACandidates.length} {secACandidates.length === 1 ? 'Candidate' : 'Candidates'}
+                                      </span>
+                                    </div>
+                                    <div className="flex-1">
+                                      {renderSectionCandidateList(secACandidates, `No nominations registered for Year ${yearNum} - Section A`)}
+                                    </div>
+                                  </div>
+
+                                  {/* 1 Year Section B in one side */}
+                                  <div className="bg-slate-50/70 rounded-xl border border-slate-200/90 p-4 flex flex-col">
+                                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
+                                      <div className="flex items-center gap-2">
+                                        <span className="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
+                                        <h5 className="font-bold text-slate-900 text-sm">Year {yearNum} &bull; Section B</h5>
+                                      </div>
+                                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white text-slate-600 border border-slate-200 shadow-2xs">
+                                        {secBCandidates.length} {secBCandidates.length === 1 ? 'Candidate' : 'Candidates'}
+                                      </span>
+                                    </div>
+                                    <div className="flex-1">
+                                      {renderSectionCandidateList(secBCandidates, `No nominations registered for Year ${yearNum} - Section B`)}
+                                    </div>
+                                  </div>
+
+                                  {/* Additional sections if registered (e.g., Section C or Combined) */}
+                                  {otherSectionNames.map((secName) => {
+                                    const otherSecCandidates = yearCandidates.filter(
+                                      (c) => (c.section || '').trim().toUpperCase() === secName
+                                    );
+                                    return (
+                                      <div key={secName} className="bg-slate-50/70 rounded-xl border border-slate-200/90 p-4 flex flex-col">
+                                        <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">
+                                          <div className="flex items-center gap-2">
+                                            <span className="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
+                                            <h5 className="font-bold text-slate-900 text-sm">Year {yearNum} &bull; Section {secName}</h5>
+                                          </div>
+                                          <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white text-slate-600 border border-slate-200 shadow-2xs">
+                                            {otherSecCandidates.length} {otherSecCandidates.length === 1 ? 'Candidate' : 'Candidates'}
+                                          </span>
+                                        </div>
+                                        <div className="flex-1">
+                                          {renderSectionCandidateList(otherSecCandidates, `No nominations registered for Year ${yearNum} - Section ${secName}`)}
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
