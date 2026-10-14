@@ -6,20 +6,28 @@ const jwt = require('jsonwebtoken');
 // @access  Public
 const loginStudent = async (req, res) => {
   try {
-    const { usn } = req.body;
+    const { section } = req.body;
+    const usn = req.body.usn ? req.body.usn.trim().toUpperCase() : req.body.usn;
+    // Normalize year if numeric string to support both numeric and string payloads
+    const year = req.body.year !== undefined && !isNaN(req.body.year) && typeof req.body.year !== 'boolean'
+      ? Number(req.body.year)
+      : req.body.year;
 
     if (!usn) {
       return res.status(400).json({ success: false, message: 'Please provide a valid USN' });
     }
 
-    // Standardize USN input to uppercase
-    const formattedUsn = usn.trim().toUpperCase();
+    // 1. Find the student by USN
+    const student = await Student.findOne({ usn });
 
-    // Find student in pre-loaded roster
-    const student = await Student.findOne({ usn: formattedUsn });
-
+    // 2. Check if student exists
     if (!student) {
-      return res.status(404).json({ success: false, message: 'USN not registered in voter list' });
+      return res.status(404).json({ success: false, message: 'Student not found' });
+    }
+
+    // 3. NEW: Verify year and section match the database record
+    if (student.year !== year || student.section !== section) {
+      return res.status(401).json({ success: false, message: 'Invalid year or section for this USN' });
     }
 
     if (student.hasVoted) {
