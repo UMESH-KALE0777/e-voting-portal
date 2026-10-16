@@ -54,10 +54,29 @@ const AdminDashboard = () => {
 
   // Fetch data on tab focus & Auto-Refresh Interval
   useEffect(() => {
+    let isCancelled = false;
     if (activeTab === 'results') {
-      fetchLiveResults();
+      API.get('/admin/results')
+        .then((response) => {
+          if (!isCancelled) {
+            setCandidates(response.data.data || []);
+          }
+        })
+        .catch((err) => {
+          if (!isCancelled) {
+            if (err.response?.status === 401) {
+              localStorage.removeItem('adminToken');
+              navigate('/admin/login');
+            } else {
+              setMessage({ type: 'error', text: 'Failed to fetch election results.' });
+            }
+          }
+        });
     }
-  }, [activeTab, fetchLiveResults]);
+    return () => {
+      isCancelled = true;
+    };
+  }, [activeTab, navigate]);
 
   useEffect(() => {
     let interval = null;
@@ -127,7 +146,7 @@ const AdminDashboard = () => {
       setCandidates([]);
       setShowResetModal(false);
       setResetConfirmText('');
-    } catch (err) {
+    } catch {
       setMessage({ type: 'error', text: 'Failed to reset election system.' });
     } finally {
       setLoading(false);
