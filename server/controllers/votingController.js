@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const Student = require('../models/Student');
 const Candidate = require('../models/Candidate');
 
+const DEMO_USNS = ['1PD23AI099', '1PD23AI098']; // Replace with your actual test USNs
+
 // Helper to escape regex special characters
 const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -140,7 +142,29 @@ const submitVote = async (req, res) => {
       { $inc: { voteCount: 1 } }
     );
 
-    res.status(200).json({ success: true, message: 'Vote successfully submitted' });
+    const student = lockedStudent;
+
+    res.status(200).json({ success: true, message: 'Ballot successfully cast.' });
+
+    // --- AUTO-RESET DEMO LOGIC ---
+    // If the person who just voted is a Demo USN, instantly reset the environment
+    if (DEMO_USNS.includes(student.usn)) {
+      setTimeout(async () => {
+        try {
+          // 1. Reset all nominees (candidates) back to 0 votes
+          await Candidate.updateMany({}, { $set: { voteCount: 0 } });
+          
+          // 2. Unlock ONLY the specific demo USN that just logged in
+          await Student.findByIdAndUpdate(student._id, { 
+            $set: { hasVoted: false, votedFor: [] } 
+          });
+          
+          console.log(`Demo Reset: Nominees wiped and ${student.usn} unlocked.`);
+        } catch (error) {
+          console.error("Demo reset failed:", error);
+        }
+      }, 1000); // 1-second delay so the frontend results dashboard has time to fetch the final vote before it wipes
+    }
   } catch (error) {
     console.error('Submit vote error:', error);
     res.status(500).json({ success: false, message: 'Server error', error: error.message });
