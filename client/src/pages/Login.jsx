@@ -210,6 +210,14 @@ const Login = () => {
                 )}
               </button>
             </div>
+
+            {/* Demo testing hint box */}
+            <div className="mt-6 p-4 bg-blue-50 text-blue-800 rounded-lg text-sm text-center border border-blue-100">
+              <p className="font-semibold mb-1">Testing the application?</p>
+              <p>Use USN: <span className="font-mono font-bold">1PD23AI099</span></p>
+              <p>Year: <span className="font-semibold">4</span> | Section: <span className="font-semibold">A</span></p>
+              <p className="text-xs mt-2 text-blue-600">The database automatically resets after every demo vote.</p>
+            </div>
           </form>
 
           {/* Footer note */}
