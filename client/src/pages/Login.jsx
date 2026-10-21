@@ -95,9 +95,6 @@ const Login = () => {
           <div className="mb-6">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
               ALPHA NEURON ELECTIONS
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">
-                2026
-              </span>
             </h1>
             <p className="text-sm text-slate-600 mt-1">
               Enter your credentials to authenticate and access your official ballot.
@@ -216,7 +213,6 @@ const Login = () => {
               <p className="font-semibold mb-1">Testing the application?</p>
               <p>Use USN: <span className="font-mono font-bold">1PD23AI099</span></p>
               <p>Year: <span className="font-semibold">4</span> | Section: <span className="font-semibold">A</span></p>
-              <p className="text-xs mt-2 text-blue-600">The database automatically resets after every demo vote.</p>
             </div>
           </form>
 
@@ -229,12 +225,6 @@ const Login = () => {
 
       </div>
 
-      {/* Footer Info */}
-      <div className="absolute bottom-4 w-full text-center z-10 pointer-events-none">
-        <p className="text-xs text-slate-400/80 font-medium tracking-wide">
-          ALPHA NEURON ELECTIONS • Dept. of AI &amp; Machine Learning
-        </p>
-      </div>
     </div>
   );
 };
