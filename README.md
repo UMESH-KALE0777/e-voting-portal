@@ -1,27 +1,39 @@
 # 🗳️ Alpha Neuron Elections
 
 <p align="center">
-  <img src="./client/public/election-preview.jpg" alt="Alpha Neuron Elections — Electronic Voting Platform" width="100%" />
+  <img src="./client/public/election-preview.jpg" alt="Alpha Neuron Elections — Your Vote. Your Voice. Your Future." width="100%" />
 </p>
 
-<h3 align="center">
-  A Security-Focused Electronic Voting Platform for Student Elections
-</h3>
+<h3 align="center">Your Vote. Your Voice. Your Future.</h3>
 
 <p align="center">
-  Built for the Department of Artificial Intelligence and Machine Learning
+  A modern electronic voting platform designed for student elections, with a focus on eligibility validation, controlled access, and voting integrity.
+</p>
+
+<p align="center">
+  <strong>Department of Artificial Intelligence & Machine Learning</strong>
+</p>
+
+<p align="center">
+  <a href="https://e-voting-portal-nu.vercel.app/login">
+    <img src="https://img.shields.io/badge/🎓_Student_Portal-Live_Demo-06B6D4?style=for-the-badge" alt="Student Portal" />
+  </a>
+  <a href="https://e-voting-portal-nu.vercel.app/admin/login">
+    <img src="https://img.shields.io/badge/🛡️_Admin_Portal-Live_Demo-1D4ED8?style=for-the-badge" alt="Admin Portal" />
+  </a>
 </p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
   <img src="https://img.shields.io/badge/React-Vite-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React and Vite" />
   <img src="https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js and Express" />
-  <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB Atlas" />
+  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
 </p>
 
 <p align="center">
   <a href="#-features">Features</a> •
-  <a href="#-security-architecture">Security</a> •
+  <a href="#-application-preview">Screenshots</a> •
+  <a href="#-security">Security</a> •
   <a href="#-tech-stack">Tech Stack</a> •
   <a href="#-getting-started">Getting Started</a> •
   <a href="#-contributing">Contributing</a>
@@ -29,235 +41,289 @@
 
 ---
 
-## 📌 Overview
+## 📖 About the Project
 
-**Alpha Neuron Elections** is a full-stack electronic voting platform designed to make student elections more organized, accessible, and reliable.
+**Alpha Neuron Elections** is a full-stack electronic voting platform developed to simplify and modernize student elections.
 
-Developed for the Department of Artificial Intelligence and Machine Learning, the platform combines a modern React interface with a Node.js and Express backend, backed by MongoDB.
+The application provides separate authentication interfaces for students and administrators. Its voting workflow is designed around student eligibility validation, controlled access, candidate selection, and the prevention of duplicate vote submissions.
 
-The project focuses on a critical challenge in online elections: **ensuring that only eligible students can vote and that each eligible voter can cast only one vote per election.**
+Built using the MERN ecosystem, the project brings together modern frontend development, backend API design, database operations, and practical web security concepts.
 
-From cohort-based voter validation and protected authentication flows to conditional database updates and administrative result dashboards, Alpha Neuron Elections brings important security engineering concepts into a practical application.
+### 🎯 Project Objectives
 
-### 🎯 Why This Project?
+- Digitize the student election process.
+- Validate student eligibility using configured academic information.
+- Enforce one successful vote per eligible voter per election.
+- Separate student and administrator access.
+- Simplify election administration and results management.
+- Apply security-conscious practices to authentication and API development.
 
-Traditional student elections can involve manual voter verification, paper ballots, time-consuming counting, and avoidable administrative overhead.
+---
 
-Alpha Neuron Elections aims to simplify that process through:
+## 🌐 Live Demo
 
-- **Eligibility validation** — restrict voting to the intended student cohort.
-- **Duplicate-vote prevention** — enforce voting eligibility through database-level conditional updates.
-- **Protected access** — separate student and administrator capabilities.
-- **Digital tabulation** — make election results easier to review.
-- **Secure API design** — apply layered protections to authentication and application endpoints.
+Explore the deployed application using the links below.
 
-> Built to explore how authentication, database consistency, and web security principles can be applied to real-world voting workflows.
+| Portal | Description | Link |
+|---|---|---|
+| 🎓 Student Portal | Student authentication and ballot access | [Open Student Portal](https://e-voting-portal-nu.vercel.app/login) |
+| 🛡️ Administrator Portal | Dedicated administrator authentication | [Open Admin Portal](https://e-voting-portal-nu.vercel.app/admin/login) |
+
+**Note:** Access to protected features requires valid authorization. The availability of individual features depends on the current deployment and election configuration.
+
+---
+
+## 🖥️ Application Preview
+
+### 🎓 Student Login Interface
+
+The student portal provides an interface for entering a University Serial Number (USN), academic year, and section before accessing the configured voting workflow.
+
+<p align="center">
+  <img src="./docs/screenshots/student-login.png" alt="Alpha Neuron Elections — Student Login Interface" width="100%" />
+</p>
+
+<p align="center">
+  <a href="https://e-voting-portal-nu.vercel.app/login">**Launch Student Portal →**</a>
+</p>
+
+### 🛡️ Administrator Login Interface
+
+The administrator portal provides a separate authentication interface for authorized personnel responsible for election administration.
+
+<p align="center">
+  <img src="./docs/screenshots/admin-login.png" alt="Alpha Neuron Elections — Administrator Login Interface" width="100%" />
+</p>
+
+<p align="center">
+  <a href="https://e-voting-portal-nu.vercel.app/admin/login">**Launch Administrator Portal →**</a>
+</p>
 
 ---
 
 ## ✨ Features
 
-### 🗳️ Voting & Election Management
+### 🗳️ Student Voting
 
-- **Cohort-Based Eligibility:** Validate voters against the configured University Serial Number (USN), academic year, and section.
-- **Single-Vote Enforcement:** Use conditional database operations to prevent multiple successful votes for the same voter.
-- **Election Results Dashboard:** Present election results and vote distributions through a centralized interface.
-- **Candidate Management:** Support candidate information and image handling through the application backend.
-- **Student Voting Workflow:** Provide an interface for eligible students to participate in an election.
+- **Cohort-Based Eligibility:** Validate student details against the configured USN, academic year, and section.
+- **Dedicated Student Portal:** Provide a focused interface for student authentication.
+- **Candidate Voting Workflow:** Support candidate selection through the configured ballot interface.
+- **Duplicate-Vote Prevention:** Apply server-side eligibility checks and appropriate conditional database operations.
+- **Structured User Experience:** Present a clear interface for accessing the election workflow.
 
-### 🔐 Authentication & Security
+### 🛡️ Administrator Access
 
-- **JWT Authentication:** Protect authenticated routes using JSON Web Tokens.
-- **Role-Based Access Control:** Separate student and administrator permissions.
-- **API Rate Limiting:** Limit repeated requests to help mitigate brute-force attempts and abuse.
-- **Security Headers:** Use Helmet to configure HTTP security headers.
-- **Input Validation & Sanitization:** Validate incoming data and reduce exposure to malformed requests and NoSQL injection patterns.
-- **Protected Media Uploads:** Apply upload restrictions, MIME-type validation, and file-size limits.
-- **Credential Verification:** Use appropriate cryptographic comparison techniques where applicable.
+- **Separate Admin Login:** Keep administrator authentication distinct from the student portal.
+- **Role-Based Authorization:** Restrict administrative operations to authorized users.
+- **Election Administration:** Support configured candidate and election management functionality.
+- **Results Access:** Provide access to election tabulation and results functionality where implemented.
 
-### ⚡ Modern Full-Stack Architecture
+### 🔐 Security-Focused Engineering
 
-- React-based frontend powered by Vite.
-- REST API built with Node.js and Express.
-- MongoDB database with Mongoose.
-- Environment-based configuration for deployment.
-- Frontend and backend designed for separate hosting.
+- **JWT Authentication:** Authenticate requests to protected endpoints using JSON Web Tokens.
+- **Role-Based Access Control (RBAC):** Separate student and administrator permissions.
+- **API Rate Limiting:** Help mitigate brute-force attempts and repeated request abuse.
+- **Security Headers:** Use Helmet to configure HTTP security headers, if enabled in the backend.
+- **Input Validation:** Validate incoming data and use safe database query patterns.
+- **Restricted File Uploads:** Apply file-type and size restrictions where candidate image uploads are supported.
+- **Environment-Based Configuration:** Keep sensitive configuration out of committed source code.
 
 ---
 
-## 🛡️ Security Architecture
+## 🔒 Security Architecture
 
-Security is a core engineering concern in Alpha Neuron Elections, not just an additional feature.
+Security is an important engineering consideration in Alpha Neuron Elections.
 
-| Security concern | Approach |
+| Security concern | Mitigation approach |
 |---|---|
-| Unauthorized access | JWT authentication and protected routes |
-| Privilege escalation | Role-based authorization checks |
-| Duplicate voting | Conditional database updates and eligibility checks |
+| Unauthorized access | Authentication and protected API endpoints |
+| Privilege escalation | Server-side role and permission checks |
+| Duplicate voting | Conditional database operations and eligibility enforcement |
 | Brute-force attempts | Rate limiting on relevant endpoints |
 | NoSQL injection | Input validation and safe query construction |
-| Malicious file uploads | File-type restrictions and upload size limits |
-| Sensitive configuration | Environment variables for secrets and connection strings |
-| HTTP security | Helmet security headers |
+| Unsafe uploads | File-type validation and upload size restrictions where applicable |
+| Secret exposure | Environment variables and secret management |
+| HTTP security | Security headers and HTTPS in production |
 
 ### Preventing Duplicate Votes
 
-A key design consideration is the time-of-check to time-of-use (TOCTOU) problem.
+Concurrent requests are an important consideration in electronic voting systems.
 
-Checking whether a student has voted and then recording a vote in separate, unprotected operations can allow concurrent requests to pass the same initial check.
+A simple check-then-write workflow may introduce a race condition if multiple requests check voter eligibility before either request updates the database.
 
-The intended approach is to enforce the eligibility condition as part of a conditional database update, for example using MongoDB's `findOneAndUpdate()` where the data model supports the required atomic operation.
+A more robust approach is to enforce the eligibility condition as part of an atomic database operation, such as MongoDB's `findOneAndUpdate()`, when appropriate to the application's data model.
 
-This reduces the possibility of concurrent requests successfully claiming the same voting eligibility.
+This helps prevent concurrent requests from successfully claiming the same voting eligibility.
 
-**Important:** Database atomicity alone does not guarantee a completely tamper-proof election. Correctness also depends on the data model, unique constraints, vote-recording logic, transaction boundaries where needed, authorization, and testing under concurrent requests.
+The overall guarantee depends on the actual implementation, including data modeling, unique constraints, vote persistence, authorization, transaction requirements, and concurrency testing.
 
 ### Security Disclaimer
 
-This project demonstrates security-focused application engineering. It has not been independently certified as a secure election system.
+Alpha Neuron Elections is a security-focused application project. It has not been independently certified as a secure election system.
 
-Before use in high-stakes public elections, it would require independent security audits, privacy analysis, end-to-end verifiability, stronger operational controls, and comprehensive testing.
+Claims of complete anonymity, end-to-end verifiability, or tamper-proof operation require additional implementation, testing, and independent security review.
 
 ---
 
 ## 🧰 Tech Stack
 
-| Category | Technologies |
+| Technology | Purpose |
 |---|---|
-| Language | JavaScript (ES6+) |
-| Frontend | React, Vite |
-| Styling | Tailwind CSS and/or custom CSS |
-| Backend | Node.js, Express.js |
-| Database | MongoDB, MongoDB Atlas |
-| Data modeling | Mongoose |
-| Authentication | JSON Web Tokens (JWT) |
-| Security | Helmet, Express Rate Limit, input validation |
-| File uploads | Multer |
-| Frontend deployment | Vercel |
-| Backend deployment | Render |
-| Database hosting | MongoDB Atlas |
+| JavaScript (ES6+) | Application logic |
+| React | Frontend user interface |
+| Vite | Frontend development and build tooling |
+| Tailwind CSS / CSS | Interface styling |
+| Node.js | Backend runtime |
+| Express.js | Backend framework and API routing |
+| MongoDB | Data storage |
+| Mongoose | MongoDB object modeling |
+| JSON Web Tokens | Authentication |
+| Helmet | HTTP security headers, if configured |
+| Express Rate Limit | Request rate limiting, if configured |
+| Multer | File uploads, where used |
+| Vercel | Deployed frontend |
+| MongoDB Atlas | Managed database hosting, if configured |
+
+The list should reflect the packages and services actually used by the repository.
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ System Architecture
+
+Alpha Neuron Elections follows a client-server architecture.
 
 ```text
-┌──────────────────────────────┐
-│        Student / Admin       │
-└──────────────┬───────────────┘
-               │
-               ▼
-┌──────────────────────────────┐
-│       React + Vite UI        │
-│   Voting / Admin Dashboard   │
-└──────────────┬───────────────┘
-               │ HTTPS / REST API
-               ▼
-┌──────────────────────────────┐
-│      Node.js + Express       │
-│                              │
-│  Authentication & RBAC       │
-│  Input Validation            │
-│  Rate Limiting               │
-│  Voting & Election Logic     │
-└──────────────┬───────────────┘
-               │
-               ▼
-┌──────────────────────────────┐
-│       MongoDB + Mongoose     │
-│                              │
-│  Voter Eligibility           │
-│  Election Data               │
-│  Vote Records                │
-│  Candidate Information       │
-└──────────────────────────────┘
+                 ┌──────────────────────┐
+                 │    Student / Admin    │
+                 └──────────┬───────────┘
+                            │
+                 ┌──────────▼───────────┐
+                 │     React + Vite     │
+                 │     Frontend UI      │
+                 └──────────┬───────────┘
+                            │
+                       HTTPS / REST
+                            │
+                 ┌──────────▼───────────┐
+                 │   Node.js + Express  │
+                 │                      │
+                 │ Authentication       │
+                 │ Authorization        │
+                 │ Input Validation     │
+                 │ Voting Logic         │
+                 └──────────┬───────────┘
+                            │
+                 ┌──────────▼───────────┐
+                 │   MongoDB + Mongoose │
+                 │                      │
+                 │ Student Records      │
+                 │ Election Data        │
+                 │ Vote Records         │
+                 │ Candidate Data       │
+                 └──────────────────────┘
 ```
+
+The exact entities and data relationships depend on the implemented database schema.
 
 ---
 
-## 📸 Screenshots
+## 📂 Project Structure
 
-Screenshots help developers understand the project before installing it.
+The repository separates frontend and backend code and keeps project documentation at the root.
 
-Add screenshots of the actual application below. Replace the example paths with images stored in your repository.
-
-| Student Voting Interface | Election Results |
-|---|---|
-| `docs/screenshots/voting.png` | `docs/screenshots/results.png` |
-
-You can display the screenshots directly using Markdown:
-
-```md
-![Student Voting Interface](./docs/screenshots/voting.png)
-
-![Election Results Dashboard](./docs/screenshots/results.png)
+```text
+e-voting-portal/
+├── client/
+│   ├── public/
+│   │   └── election-preview.jpg
+│   └── ...
+├── server/
+│   ├── config/
+│   ├── controllers/
+│   │   ├── adminController.js
+│   │   ├── authController.js
+│   │   └── votingController.js
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── utils/
+│   ├── server.js
+│   ├── package.json
+│   └── .env
+├── docs/
+│   └── screenshots/
+│       ├── student-login.png
+│       └── admin-login.png
+├── .gitignore
+└── README.md
 ```
 
-Consider adding screenshots of the administrator dashboard, candidate selection, and responsive mobile interface as well.
+This is a representative structure based on the files identified in the project. Additional files may exist in the frontend and backend directories.
 
 ---
 
 ## 🚀 Getting Started
 
-Follow these instructions to run Alpha Neuron Elections locally.
+Follow these steps to run the application locally.
 
 ### Prerequisites
 
-Install the following before getting started:
+Install the following tools:
 
-- [Node.js](https://nodejs.org/) — version 18 or later, subject to your dependencies.
-- [Git](https://git-scm.com/)
-- A [MongoDB Atlas](https://www.mongodb.com/atlas) cluster or local MongoDB instance.
+- [Node.js](https://nodejs.org/) — version 18 or later, depending on project dependencies.
+- [Git](https://git-scm.com/).
+- [MongoDB Atlas](https://www.mongodb.com/atlas) or a local MongoDB instance.
 
 ### 1. Clone the Repository
 
-Replace the repository URL with the actual GitHub URL.
-
 ```bash
-git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
-cd YOUR-REPOSITORY
+git clone https://github.com/UMESH-KALE0777/e-voting-portal.git
+cd e-voting-portal
 ```
 
-### 2. Configure the Backend
-
-Create a `.env` file inside the `server/` directory.
-
-```env
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=replace_with_a_strong_random_secret
-CLIENT_URL=http://localhost:5173
-ADMIN_USERNAME=your_admin_username
-ADMIN_PASSWORD=your_admin_password
-```
-
-Use the environment variable names expected by your actual backend implementation.
-
-**Never commit `.env` files, database credentials, administrator passwords, or JWT secrets to GitHub.** Add them to `.gitignore` and configure production secrets through your hosting provider.
-
-### 3. Configure the Frontend
-
-Create a `.env` file inside the `client/` directory.
-
-```env
-VITE_API_URL=http://localhost:5000/api
-```
-
-Ensure the frontend uses this variable when making API requests.
-
-### 4. Install Dependencies
-
-Open two terminals from the repository root.
-
-**Terminal 1 — Backend**
+### 2. Install Backend Dependencies
 
 ```bash
 cd server
 npm install
+```
+
+### 3. Configure Backend Environment Variables
+
+Create a `.env` file inside `server/`.
+
+Example configuration:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_strong_random_secret
+CLIENT_URL=http://localhost:5173
+```
+
+Use the exact variable names expected by your backend. Additional variables may be required depending on the implementation.
+
+**Security reminders:**
+
+- Never commit real credentials or `.env` files.
+- Use strong, randomly generated secrets.
+- Configure production secrets through your hosting provider.
+- Use appropriately scoped database credentials.
+- Do not expose private credentials in frontend environment variables.
+
+### 4. Start the Backend
+
+From the `server/` directory:
+
+```bash
 npm start
 ```
 
-**Terminal 2 — Frontend**
+If your `package.json` defines a different start script, use the configured script.
+
+### 5. Install and Start the Frontend
+
+Open a second terminal from the repository root:
 
 ```bash
 cd client
@@ -265,83 +331,83 @@ npm install
 npm run dev
 ```
 
-Open the local frontend URL displayed by Vite, usually:
+Open the local URL displayed by Vite, typically:
 
 http://localhost:5173
 
-The backend should be available at:
+The backend typically runs on:
 
 http://localhost:5000
 
-> If your `package.json` files use different scripts, follow the scripts defined in your project.
+Ensure the frontend API URL and backend CORS configuration match your local environment.
 
 ---
 
-## 🌐 Deployment
+## ☁️ Deployment
 
-The application can be deployed using separate frontend, backend, and database services.
+The student and administrator login interfaces are deployed on Vercel.
 
-| Component | Suggested platform |
+A typical full-stack deployment can use:
+
+| Component | Platform |
 |---|---|
-| React frontend | Vercel |
-| Express backend | Render |
-| MongoDB database | MongoDB Atlas |
+| Frontend | Vercel |
+| Backend API | Render or another Node.js-compatible host |
+| Database | MongoDB Atlas |
 
 ### Production Checklist
 
-- Configure production environment variables.
-- Set the correct frontend origin in the backend CORS configuration.
-- Restrict database access and use appropriately scoped database credentials.
-- Enforce HTTPS.
-- Use strong, randomly generated authentication secrets.
-- Configure rate limits appropriate to your traffic.
-- Validate administrator authorization on the server, not just in the frontend.
-- Test concurrent voting attempts and duplicate submissions.
-- Verify backup, recovery, and election-close procedures.
-- Avoid exposing private voter information or sensitive administrative data in result responses and logs.
+- [ ] Configure production environment variables.
+- [ ] Restrict CORS to approved frontend origins.
+- [ ] Enforce HTTPS.
+- [ ] Protect administrative endpoints with server-side authorization.
+- [ ] Use strong authentication secrets and scoped database credentials.
+- [ ] Validate incoming API data.
+- [ ] Test duplicate and concurrent voting attempts.
+- [ ] Verify database failure handling and recovery.
+- [ ] Avoid exposing sensitive voter information in public responses or logs.
+- [ ] Test the application on desktop and mobile devices.
 
 ---
 
 ## 🧪 Testing & Reliability
 
-A voting system should be evaluated against failure scenarios, not just its successful user flows.
+Recommended test cases include:
 
-Useful tests to implement include:
-
-- [ ] Reject voters who do not satisfy eligibility requirements.
+- [ ] Reject students who do not meet eligibility requirements.
 - [ ] Reject repeated vote submissions.
-- [ ] Test simultaneous voting requests for the same voter.
-- [ ] Prevent students from accessing administrator-only endpoints.
-- [ ] Reject malformed and unexpected API payloads.
-- [ ] Verify rate-limit behavior on authentication endpoints.
-- [ ] Reject unsupported file types and oversized uploads.
-- [ ] Confirm results remain consistent with stored vote records.
-- [ ] Verify error handling when the database is unavailable.
+- [ ] Test simultaneous vote requests from the same voter.
+- [ ] Block unauthorized access to administrator endpoints.
+- [ ] Reject malformed request payloads.
+- [ ] Verify rate-limiting behavior on relevant endpoints.
+- [ ] Reject unsupported or oversized uploads where applicable.
+- [ ] Verify consistency between stored votes and displayed results.
+- [ ] Test error handling when the database is unavailable.
 
-These are recommended verification tasks; mark them complete only after running the corresponding tests.
+These are recommended tests, not claims that every test has already been implemented or passed.
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Future Improvements
 
-Potential improvements for future versions include:
+Potential improvements for future releases include:
 
-- [ ] Automated backend and frontend tests.
-- [ ] CI checks for linting and test execution.
+- [ ] Automated frontend and backend tests.
+- [ ] Continuous integration for linting and testing.
 - [ ] Improved election lifecycle management.
-- [ ] Auditable administrative actions.
+- [ ] Administrative audit logs.
 - [ ] Enhanced monitoring and error reporting.
-- [ ] Accessibility and mobile usability improvements.
-- [ ] Independent security review and documented threat modeling.
-- [ ] Privacy-preserving election audit mechanisms.
+- [ ] Accessibility and responsive design improvements.
+- [ ] Documented threat modeling and independent security review.
+- [ ] Stronger election auditability and privacy protections.
 
-Have an idea that could improve the project? Contributions and constructive feedback are welcome.
+Have an idea for an improvement? Contributions and constructive feedback are welcome.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Whether you want to improve security, fix bugs, enhance the interface, or add tests, your input can help make the project better.
+Contributions are welcome! You can help improve Alpha Neuron Elections by fixing bugs, improving the interface, strengthening security, writing tests, or suggesting new features.
 
 ### Contribution Workflow
 
@@ -370,43 +436,47 @@ git push origin feature/your-feature
 
 **5. Open a Pull Request**
 
-Explain the problem, describe your changes, and include screenshots or test results where relevant.
+Describe your changes, explain the problem they solve, and include relevant screenshots or test results.
 
-For significant changes, open an issue first to discuss the proposed approach.
+For larger changes, consider opening an issue first to discuss your proposal.
 
 ---
 
 ## 🐛 Issues & Feature Requests
 
-Found a bug or have an improvement in mind?
+Found a bug or have an idea for improvement?
 
-Open an issue in the repository with:
+Open an issue in the repository and include:
 
 - A clear description of the problem.
-- Steps to reproduce the issue.
+- Steps to reproduce it.
 - Expected and actual behavior.
-- Relevant screenshots or error messages, with sensitive information removed.
+- Relevant screenshots or sanitized error messages.
 
-Please avoid posting credentials, voter records, or other confidential information in public issues.
+Never include real student credentials, private voter records, passwords, or secrets in public issues.
 
 ---
 
 ## 📄 License
 
-This project is distributed under the MIT License, provided that the repository includes a corresponding `LICENSE` file.
+This project is intended to use the MIT License. Ensure that the repository contains a valid `LICENSE` file before describing the project as MIT-licensed.
 
-See [LICENSE](./LICENSE) for the full license text.
+See [LICENSE](./LICENSE) for the complete license text.
 
 ---
 
 ## ⭐ Support the Project
 
-If you find Alpha Neuron Elections useful, educational, or interesting, consider giving the repository a **star ⭐ on GitHub**.
+If you find Alpha Neuron Elections useful, interesting, or educational, consider giving the repository a star ⭐ on GitHub.
 
-Your support helps more developers discover the project and encourages further work on secure, reliable web applications.
+Your support helps other developers discover the project and encourages continued work on security-conscious web applications.
 
-**Explore it. Learn from it. Help make it better.**
+Found a bug? Have an idea? Contributions and constructive feedback are welcome.
 
 <p align="center">
-  <strong>Built with JavaScript, MongoDB, and a focus on security engineering.</strong>
+  <strong>Alpha Neuron Elections</strong>
+  <br />
+  Your Vote. Your Voice. Your Future.
+  <br /><br />
+  ⭐ Star the repository if you find it useful!
 </p>
